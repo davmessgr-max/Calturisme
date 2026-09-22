@@ -6,16 +6,32 @@ interface Props {
   description: string;
   url: string;
   image?: string;
+  date?: string;
 }
-const { name, description, url, image } = Astro.props;
+const { name, description, url, image, date } = Astro.props;
+const initial = name.trim().charAt(0).toUpperCase();
 ---
-<article class="card">
-  <a href={url} target="_blank" rel="noopener noreferrer" class="visual" aria-label={`Visita ${name} (s'obre en una altra pestanya)`}>
-    {image ? <img src={image} alt="" loading="lazy" /> : <HillPanel />}
+<article class="post">
+  <div class="post-head">
+    <span class="avatar" aria-hidden="true">{initial}</span>
+    <span class="post-name">{name}</span>
+  </div>
+
+  <a
+    href={url}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="post-image"
+    aria-label={`Visita ${name} (s'obre en una altra pestanya)`}
+  >
+    {image ? <img src={image} alt={name} loading="lazy" /> : <HillPanel />}
   </a>
-  <div class="body">
-    <h3><a href={url} target="_blank" rel="noopener noreferrer">{name}</a></h3>
-    <p class="desc measure">{description}</p>
+
+  <div class="post-caption">
+    <p class="caption-text">
+      <strong>{name}</strong> {description}
+    </p>
+    {date && <p class="post-date">{date}</p>}
     <a href={url} target="_blank" rel="noopener noreferrer" class="btn-link">
       Visita el seu lloc web
     </a>
@@ -23,37 +39,69 @@ const { name, description, url, image } = Astro.props;
 </article>
 
 <style>
-  .card {
+  .post {
     display: flex;
     flex-direction: column;
   }
-  .visual {
+
+  .post-head {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding-bottom: 0.85rem;
+  }
+  .avatar {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: var(--color-pine);
+    color: var(--color-paper);
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    flex-shrink: 0;
+  }
+  .post-name {
+    font-size: 0.92rem;
+    font-weight: 500;
+  }
+
+  .post-image {
     display: block;
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 1 / 1;
     overflow: hidden;
     border: 1px solid var(--color-line);
   }
-  .visual img {
+  .post-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.4s ease;
+    transition: transform 0.5s ease;
   }
-  .visual:hover img { transform: scale(1.03); }
-  .body {
+  .post-image:hover img { transform: scale(1.02); }
+
+  .post-caption {
     padding-top: 0.9rem;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
     align-items: flex-start;
+    gap: 0.45rem;
   }
-  h3 {
-    font-size: 1.2rem;
-  }
-  h3 a:hover { color: var(--color-clay); }
-  .desc {
+  .caption-text {
     font-size: 0.92rem;
-    color: var(--color-ink);
-    opacity: 0.85;
+    line-height: 1.5;
+  }
+  .caption-text strong {
+    font-weight: 600;
+  }
+  .post-date {
+    font-size: 0.78rem;
+    color: var(--color-pine-dark);
+    opacity: 0.75;
+  }
+  .post-caption .btn-link {
+    margin-top: 0.15rem;
+    font-size: 0.88rem;
   }
 </style>
