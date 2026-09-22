@@ -1,4 +1,5 @@
 ---
+import Logo from './Logo.astro';
 const { pathname } = Astro.url;
 const links = [
   { href: '/', label: 'Inici' },
@@ -7,7 +8,10 @@ const links = [
 ---
 <header class="site-header">
   <div class="wrap bar">
-    <a href="/" class="wordmark">Cal Turisme</a>
+    <a href="/" class="wordmark">
+      <Logo size={26} />
+      <span>Cal Turisme</span>
+    </a>
     <nav aria-label="Navegacio principal">
       <ul>
         {links.map((link) => (
@@ -32,9 +36,12 @@ const links = [
     padding-block: 0.65rem;
   }
   .wordmark {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
     font-family: var(--font-display);
+    font-weight: 600;
     font-size: 1.15rem;
-    font-weight: 560;
   }
   nav ul {
     display: flex;
