@@ -1,9 +1,9 @@
 [
-    {
-          "name": "Mas del Molí",
-          "description": "Allotjament rural gestionat de manera independent. Descripció pendent d'actualitzar.",
-          "url": "https://masdelmoli.lodgify.com/",
-          "image": "/img/mas-del-moli.jpg",
-          "date": "22 de setembre de 2026"
-    }
+      {
+              "name": "Mas del Molí",
+              "description": "Allotjament rural gestionat de manera independent. Descripció pendent d'actualitzar.",
+              "url": "https://masdelmoli.lodgify.com/",
+              "images": ["/img/mas-del-moli.jpg", "/img/mas-del-moli-2.jpg", "/img/mas-del-moli-3.jpg"],
+              "date": "22 de setembre de 2026"
+      }
 ]
