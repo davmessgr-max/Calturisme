@@ -1,0 +1,18 @@
+---
+// Motiu visual de reserva (placeholder) mentre no hi ha fotografia real.
+// Un perfil de turons en dos tons, evocant el paisatge del territori.
+// Un cop hi hagi fotografies, substitueix l'ús d'aquest component per <img>.
+interface Props {
+  class?: string;
+}
+const { class: klass = '' } = Astro.props;
+---
+<svg class={klass} viewBox="0 0 400 300" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg" role="presentation" aria-hidden="true">
+  <rect width="400" height="300" fill="var(--color-paper-2)" />
+  <path d="M0 190 C 60 150, 110 210, 170 170 C 230 130, 260 190, 400 150 L 400 300 L 0 300 Z" fill="var(--color-wheat)" opacity="0.55" />
+  <path d="M0 230 C 80 190, 140 250, 220 210 C 290 175, 330 225, 400 200 L 400 300 L 0 300 Z" fill="var(--color-pine)" opacity="0.9" />
+  <circle cx="330" cy="60" r="26" fill="var(--color-clay)" opacity="0.85" />
+</svg>
+<style>
+  svg { width: 100%; height: 100%; }
+</style>

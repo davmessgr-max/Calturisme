@@ -1,0 +1,55 @@
+---
+const { pathname } = Astro.url;
+const links = [
+  { href: '/', label: 'Inici' },
+  { href: '/qui-som/', label: 'Qui som' },
+];
+---
+<header class="site-header">
+  <div class="wrap bar">
+    <a href="/" class="wordmark">Cal Turisme</a>
+    <nav aria-label="Navegació principal">
+      <ul>
+        {links.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              aria-current={pathname === link.href ? 'page' : undefined}
+            >{link.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+  <hr class="hairline" />
+</header>
+
+<style>
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 1.25rem;
+  }
+  .wordmark {
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    font-weight: 560;
+  }
+  nav ul {
+    display: flex;
+    gap: clamp(1.25rem, 3vw, 2.25rem);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  nav a {
+    font-size: 0.95rem;
+    padding-bottom: 0.2rem;
+    border-bottom: 1px solid transparent;
+  }
+  nav a:hover,
+  nav a[aria-current="page"] {
+    border-color: var(--color-clay);
+  }
+</style>
