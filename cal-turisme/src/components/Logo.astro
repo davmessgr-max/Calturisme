@@ -1,0 +1,32 @@
+---
+// Icona de la marca: casa amb l'efecte de doble trac (Cerignola darrere,
+// verd molsa al davant), tal com defineix el document d'identitat visual.
+interface Props {
+  size?: number;
+  class?: string;
+}
+const { size = 32, class: klass = '' } = Astro.props;
+---
+<svg
+  class={klass}
+  width={size}
+  height={size * (236 / 216)}
+  viewBox="0 0 216 236"
+  fill="none"
+  stroke-width="16"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  role="presentation"
+  aria-hidden="true"
+>
+  <g transform="translate(12,12)" stroke="var(--color-clay)">
+    <path d="M32 108 L100 38 L168 108 L168 176" />
+    <path d="M32 108 L32 172" />
+    <path d="M88 176 C88 132 112 132 112 176 L112 200" />
+  </g>
+  <g stroke="var(--color-pine)">
+    <path d="M32 108 L100 38 L168 108 L168 176" />
+    <path d="M32 108 L32 172" />
+    <path d="M88 176 C88 132 112 132 112 176 L112 200" />
+  </g>
+</svg>
