@@ -1,26 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AccommodationCard from '../components/AccommodationCard.astro';
-import HillPanel from '../components/HillPanel.astro';
 import allotjaments from '../data/allotjaments.json';
 ---
 <BaseLayout title="Inici">
   <section class="hero">
-    <div class="wrap hero-grid">
-      <div class="hero-text">
-        <p class="kicker">On cal fer turisme? A Cal Turisme.</p>
-        <h1>El turisme rural, fet amb cura.</h1>
-        <p class="lede measure">
-          Cal Turisme reuneix petits allotjaments turistics -masies, cases
-          rurals, ecofinques i albergs- compromesos amb el turisme
-          sostenible. Ajudem a millorar la seva presencia digital i
-          acompanyem qui vol descobrir el territori d'una altra manera.
-        </p>
-        <a href="/qui-som/" class="btn-link">Coneix el projecte</a>
-      </div>
-      <div class="hero-visual">
-        <HillPanel />
-      </div>
+    <div class="wrap">
+      <p class="hero-line">Fes turisme on cal, fes-lo amb Cal Turisme.</p>
     </div>
   </section>
 
@@ -39,30 +25,15 @@ import allotjaments from '../data/allotjaments.json';
 </BaseLayout>
 
 <style>
-  .hero { padding-block: clamp(2.5rem, 6vw, 5rem) clamp(3rem, 7vw, 6rem); }
-  .hero-grid {
-    display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: clamp(2rem, 5vw, 4rem);
-    align-items: center;
+  .hero {
+    background: var(--color-paper-2);
+    border-bottom: 1px solid var(--color-line);
+    padding-block: 1.5rem;
   }
-  .kicker {
-    font-size: 0.95rem;
-    color: var(--color-pine-dark);
-    margin-bottom: 0.9rem;
-  }
-  .hero-text h1 {
-    font-size: var(--step-3);
-    margin-bottom: 1.1rem;
-  }
-  .lede {
-    font-size: 1.05rem;
-    margin-bottom: 1.5rem;
-  }
-  .hero-visual {
-    aspect-ratio: 4 / 3;
-    border: 1px solid var(--color-line);
-    overflow: hidden;
+  .hero-line {
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 1rem + 1vw, 1.5rem);
+    text-align: center;
   }
 
   .listing { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
@@ -87,10 +58,5 @@ import allotjaments from '../data/allotjaments.json';
   .feed > :global(*) {
     width: 100%;
     max-width: 30rem;
-  }
-
-  @media (max-width: 46rem) {
-    .hero-grid { grid-template-columns: 1fr; }
-    .hero-visual { order: -1; aspect-ratio: 16 / 9; }
   }
 </style>
