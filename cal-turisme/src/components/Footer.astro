@@ -5,6 +5,23 @@ const year = new Date().getFullYear();
   <hr class="hairline" />
   <div class="wrap bar">
     <p class="wordmark">Cal Turisme</p>
+    <div class="contact">
+      <a href="mailto:calturisme@gmail.com" class="contact-link">calturisme@gmail.com</a>
+      <a
+        href="https://www.instagram.com/calturisme/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="contact-link ig-link"
+        aria-label="Cal Turisme a Instagram"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="2.5" y="2.5" width="19" height="19" rx="5" />
+          <circle cx="12" cy="12" r="4.6" />
+          <circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none" />
+        </svg>
+        <span>@calturisme</span>
+      </a>
+    </div>
     <p class="note">Turisme rural, fet a mida — {year}</p>
   </div>
 </footer>
@@ -22,6 +39,29 @@ const year = new Date().getFullYear();
     font-family: var(--font-display);
     font-weight: 600;
     font-size: 1.05rem;
+  }
+  .contact {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 1.25rem;
+  }
+  .contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.88rem;
+    color: var(--color-pine-dark);
+    transition: color 0.15s ease;
+  }
+  .contact-link:hover,
+  .contact-link:focus-visible {
+    color: var(--color-clay);
+  }
+  .ig-link svg {
+    width: 1.05rem;
+    height: 1.05rem;
+    flex-shrink: 0;
   }
   .note {
     font-size: 0.85rem;
