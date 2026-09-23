@@ -90,6 +90,142 @@ p { margin: 0; }
      border-color: var(--color-clay);
 }
 
+/* ---------- botons ---------- */
+.btn {
+     display: inline-flex;
+     align-items: center;
+     gap: 0.6em;
+     padding: 0.85rem 1.6rem;
+     font-family: var(--font-body);
+     font-weight: 500;
+     font-size: 0.92rem;
+     letter-spacing: 0.01em;
+     border-radius: 2px;
+     border: 1px solid transparent;
+     cursor: pointer;
+     transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+.btn--primary {
+     background: var(--color-pine);
+     color: var(--color-paper);
+}
+.btn--primary:hover,
+.btn--primary:focus-visible {
+     background: var(--color-pine-dark);
+     transform: translateY(-1px);
+}
+.btn--outline {
+     border-color: var(--color-ink);
+     color: var(--color-ink);
+}
+.btn--outline:hover,
+.btn--outline:focus-visible {
+     background: var(--color-ink);
+     color: var(--color-paper);
+}
+
+/* ---------- eyebrow ---------- */
+.eyebrow {
+     display: inline-flex;
+     align-items: center;
+     gap: 0.6em;
+     font-size: 0.78rem;
+     letter-spacing: 0.16em;
+     text-transform: uppercase;
+     color: var(--color-clay);
+     font-weight: 600;
+     margin-bottom: 1em;
+}
+.eyebrow::before {
+     content: '';
+     width: 26px;
+     height: 1px;
+     background: var(--color-clay);
+     display: inline-block;
+}
+.eyebrow.center { justify-content: center; }
+
+/* ---------- reveal en scroll ---------- */
+.reveal {
+     opacity: 0;
+     transform: translateY(22px);
+     transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.reveal.is-visible {
+     opacity: 1;
+     transform: none;
+}
+
+/* ---------- seccions ---------- */
+.section { padding-block: clamp(3rem, 7vw, 5.5rem); }
+.section--tint {
+     background: var(--color-paper-2);
+     border-block: 1px solid var(--color-line);
+}
+.center { text-align: center; margin-inline: auto; }
+
+/* ---------- feature de dues columnes ---------- */
+.feature {
+     display: grid;
+     grid-template-columns: 1fr 1fr;
+     gap: clamp(2rem, 6vw, 4.5rem);
+     align-items: center;
+}
+.feature--reverse { direction: rtl; }
+.feature--reverse > * { direction: ltr; }
+.feature__media {
+     aspect-ratio: 4 / 3;
+     border: 1px solid var(--color-line);
+     overflow: hidden;
+}
+
+/* ---------- targetes amb icona ---------- */
+.icon-cards {
+     display: grid;
+     grid-template-columns: repeat(auto-fit, minmax(15.5rem, 1fr));
+     gap: 1.5rem;
+}
+.icon-card {
+     background: var(--color-paper-2);
+     border: 1px solid var(--color-line);
+     padding: 2rem 1.75rem;
+}
+.icon-card .icon {
+     width: 34px;
+     height: 34px;
+     color: var(--color-clay);
+     margin-bottom: 1.1rem;
+}
+.icon-card h3 { font-size: 1.05rem; margin-bottom: 0.5rem; }
+.icon-card p { font-size: 0.92rem; color: var(--color-capers); }
+
+/* ---------- banner ---------- */
+.banner {
+     background: var(--color-pine-dark);
+     color: var(--color-paper);
+     text-align: center;
+     padding-block: clamp(3.5rem, 8vw, 6rem);
+}
+.banner h2 { color: var(--color-paper); }
+.banner .lede {
+     color: var(--color-paper);
+     opacity: 0.88;
+     margin-inline: auto;
+}
+.banner .btn--outline {
+     border-color: var(--color-paper);
+     color: var(--color-paper);
+}
+.banner .btn--outline:hover,
+.banner .btn--outline:focus-visible {
+     background: var(--color-paper);
+     color: var(--color-pine-dark);
+}
+
+@media (max-width: 60rem) {
+     .feature, .feature--reverse { grid-template-columns: 1fr; direction: ltr; }
+}
+
 :focus-visible {
      outline: 2px solid var(--color-pine);
      outline-offset: 3px;
@@ -98,4 +234,5 @@ p { margin: 0; }
 @media (prefers-reduced-motion: reduce) {
      html { scroll-behavior: auto; }
      * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+     .reveal { opacity: 1; transform: none; }
 }

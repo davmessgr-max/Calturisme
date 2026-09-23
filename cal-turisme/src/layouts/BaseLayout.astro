@@ -33,5 +33,29 @@ const {
       <slot />
     </main>
     <Footer />
+    <script>
+      const header = document.querySelector('.site-header');
+      const onScroll = () => header?.classList.toggle('is-scrolled', window.scrollY > 8);
+      document.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+
+      const revealEls = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window && revealEls.length) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                io.unobserve(entry.target);
+              }
+            }
+          },
+          { threshold: 0.15 }
+        );
+        revealEls.forEach((el) => io.observe(el));
+      } else {
+        revealEls.forEach((el) => el.classList.add('is-visible'));
+      }
+    </script>
   </body>
 </html>
