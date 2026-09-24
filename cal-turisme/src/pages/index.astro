@@ -1,31 +1,68 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AccommodationCard from '../components/AccommodationCard.astro';
-import HillPanel from '../components/HillPanel.astro';
+import Logo from '../components/Logo.astro';
+import IgIcon from '../components/IgIcon.astro';
 import allotjaments from '../data/allotjaments.json';
+import reels from '../data/reels.json';
+
+const igUrl = 'https://www.instagram.com/calturisme/';
 ---
 <BaseLayout title="Inici">
   <section class="hero">
-    <div class="wrap hero-grid">
-      <div class="hero-text reveal">
-        <p class="eyebrow">On cal fer turisme</p>
-        <h1>El turisme rural, <em>fet amb cura</em>.</h1>
-        <p class="lede measure">
-          Cal Turisme reuneix petits allotjaments turístics —masies, cases
-          rurals, ecofinques i albergs— compromesos amb el turisme
-          sostenible. Ajudem a millorar la seva presència digital i
-          acompanyem qui vol descobrir el territori d'una altra manera.
-        </p>
-        <div class="hero-actions">
-          <a href="#allotjaments" class="btn btn--primary">Veure allotjaments</a>
-          <a href="/qui-som/" class="btn btn--outline">Coneix el projecte</a>
-        </div>
-      </div>
-      <div class="hero-visual reveal">
-        <HillPanel />
+    <div class="hero__media">
+      <img
+        src="/img/hero-fachada.jpg"
+        alt="Façana de pedra d'una masia entre cipressos i jardí"
+        fetchpriority="high"
+      />
+    </div>
+    <div class="wrap hero__content">
+      <p class="eyebrow">On cal fer turisme</p>
+      <h1>El turisme rural,<br /><em>fet amb cura.</em></h1>
+      <p class="hero__sub">
+        Petits allotjaments —masies, cases rurals, ecofinques i albergs—
+        compromesos amb el turisme sostenible.
+      </p>
+      <div class="hero-actions">
+        <a href="#allotjaments" class="btn btn--primary">Veure allotjaments</a>
+        <a href="#reels" class="btn btn--outline">Mira els reels</a>
       </div>
     </div>
   </section>
+
+  <div class="wrap">
+    <section class="ig-profile reveal" aria-label="Cal Turisme a Instagram">
+      <div class="ig-head">
+        <div class="ig-avatar"><Logo size={34} /></div>
+        <div class="ig-meta">
+          <p class="ig-handle">@calturisme</p>
+          <p class="ig-bio">Turisme rural, fet amb cura. Allotjaments triats amb criteri.</p>
+        </div>
+        <a href={igUrl} target="_blank" rel="noopener noreferrer" class="btn btn--primary ig-follow">
+          <IgIcon /> Segueix-nos
+        </a>
+      </div>
+      <ul class="highlights" aria-label="Tipus d'allotjament">
+        <li class="highlight">
+          <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-7 9 7v9H3z"/><path d="M10 20v-6h4v6"/></svg></span>
+          Masies
+        </li>
+        <li class="highlight">
+          <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10l8-6 8 6v10"/><path d="M9 20v-5h6v5"/><path d="M16 6V4h2v3"/></svg></span>
+          Cases rurals
+        </li>
+        <li class="highlight">
+          <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21c8 0 14-6 14-14V5h-2C9 5 5 11 5 19v2z"/><path d="M5 21c3-6 6-9 12-12"/></svg></span>
+          Ecofinques
+        </li>
+        <li class="highlight">
+          <span class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18V7"/><path d="M3 14h18v4"/><path d="M21 14v-3a3 3 0 0 0-3-3h-7v6"/><circle cx="7" cy="11" r="1.5"/></svg></span>
+          Albergs
+        </li>
+      </ul>
+    </section>
+  </div>
 
   <section class="section values">
     <div class="wrap">
@@ -38,7 +75,7 @@ import allotjaments from '../data/allotjaments.json';
           criteri.
         </p>
       </div>
-      <div class="icon-cards reveal">
+      <div class="icon-cards" data-stagger>
         <div class="icon-card">
           <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M12 2.5l2.3 2 2.9-.5.9 2.8 2.6 1.4-.9 2.8.9 2.8-2.6 1.4-.9 2.8-2.9-.5L12 21.5l-2.3-2-2.9.5-.9-2.8-2.6-1.4.9-2.8-.9-2.8 2.6-1.4.9-2.8 2.9.5L12 2.5z"/>
@@ -67,6 +104,35 @@ import allotjaments from '../data/allotjaments.json';
     </div>
   </section>
 
+  <section class="section section--tint" id="reels">
+    <div class="wrap reels-grid">
+      <div class="reveal">
+        <p class="eyebrow">Reels</p>
+        <h2>Els allotjaments, en moviment</h2>
+        <p class="lede measure">
+          Un cop d'ull als espais del recull, tal com ells mateixos els
+          comparteixen a Instagram.
+        </p>
+        <a href="https://www.instagram.com/masdelmoli/" target="_blank" rel="noopener noreferrer" class="btn btn--outline reel-cta">
+          <IgIcon /> Segueix @masdelmoli
+        </a>
+      </div>
+      <div class="reel-list" data-stagger>
+        {reels.map((reel) => (
+          <div class="phone">
+            <iframe
+              src={`https://www.instagram.com/p/${reel.id}/embed/`}
+              title={`Reel de @${reel.account} a Instagram`}
+              loading="lazy"
+              scrolling="no"
+              allowfullscreen
+            ></iframe>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <section class="listing" id="allotjaments">
     <div class="wrap">
       <div class="listing-head reveal">
@@ -80,7 +146,10 @@ import allotjaments from '../data/allotjaments.json';
     </div>
   </section>
 
-  <section class="banner reveal">
+  <section class="banner banner--photo reveal">
+    <div class="banner__media">
+      <img src="/img/porche-piscina.jpg" alt="" loading="lazy" />
+    </div>
     <div class="wrap center measure">
       <p class="eyebrow center">Ets un allotjament?</p>
       <h2>Gestiones un allotjament rural?</h2>
@@ -94,39 +163,9 @@ import allotjaments from '../data/allotjaments.json';
 </BaseLayout>
 
 <style>
-  .hero { padding-block: clamp(3rem, 7vw, 5.5rem) clamp(3.5rem, 8vw, 6.5rem); }
-  .hero-grid {
-    display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: clamp(2rem, 5vw, 4rem);
-    align-items: center;
-  }
-  .hero-text h1 {
-    font-size: var(--step-3);
-    margin-bottom: 1.1rem;
-  }
-  .hero-text h1 em {
-    font-style: italic;
-    font-weight: 400;
-    color: var(--color-pine-dark);
-  }
-  .hero-text .lede {
-    font-size: 1.05rem;
-    margin-bottom: 1.75rem;
-  }
-  .hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-  .hero-visual {
-    aspect-ratio: 4 / 3;
-    border: 1px solid var(--color-line);
-    overflow: hidden;
-  }
-
   .section-head { margin-bottom: 2.5rem; }
-  .icon-cards { margin-top: 1rem; }
+  .reel-cta { margin-top: 1.75rem; gap: 0.5em; }
+  .reel-cta :global(svg) { width: 1.1rem; height: 1.1rem; }
 
   .listing { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
   .listing-head {
@@ -150,10 +189,5 @@ import allotjaments from '../data/allotjaments.json';
   .feed > :global(*) {
     width: 100%;
     max-width: clamp(30rem, 42vw, 46rem);
-  }
-
-  @media (max-width: 46rem) {
-    .hero-grid { grid-template-columns: 1fr; }
-    .hero-visual { order: -1; aspect-ratio: 16 / 9; }
   }
 </style>
