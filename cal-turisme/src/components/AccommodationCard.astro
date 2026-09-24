@@ -3,7 +3,10 @@ import fs from 'node:fs';
 import path from 'node:path';
 import HillPanel from './HillPanel.astro';
 
-type MediaItem = string | { type: 'video'; src: string; poster?: string };
+type MediaItem =
+  | string
+  | { type: 'video'; src: string; poster?: string }
+  | { type: 'instagram'; id: string };
 
 interface Props {
   name: string;
@@ -20,7 +23,7 @@ const initial = name.trim().charAt(0).toUpperCase();
 const roots = [process.cwd(), path.join(process.cwd(), 'cal-turisme')];
 const fileExists = (src: string) => roots.some((r) => fs.existsSync(path.join(r, 'public', src)));
 const items = media
-  .filter((m) => typeof m === 'string' || fileExists(m.src))
+  .filter((m) => typeof m === 'string' || m.type === 'instagram' || fileExists(m.src))
   .map((m) => (typeof m === 'string' ? { type: 'image' as const, src: m } : m));
 const hasMedia = items.length > 0;
 const isCarousel = items.length > 1;
@@ -36,7 +39,17 @@ const label = `Visita ${name} (s'obre en una altra pestanya)`;
     {hasMedia ? (
       <div class="carousel-track">
         {items.map((item) =>
-          item.type === 'video' ? (
+          item.type === 'instagram' ? (
+            <div class="slide slide--embed">
+              <iframe
+                src={`https://www.instagram.com/p/${item.id}/embed/`}
+                title={`Publicació de ${name} a Instagram`}
+                loading="lazy"
+                scrolling="no"
+                allowfullscreen
+              ></iframe>
+            </div>
+          ) : item.type === 'video' ? (
             <div class="slide slide--video">
               <video
                 src={item.src}
@@ -213,6 +226,15 @@ const label = `Visita ${name} (s'obre en una altra pestanya)`;
     scroll-snap-align: start;
     display: block;
     position: relative;
+  }
+
+  .slide--embed { background: #fff; }
+  .slide--embed iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: #fff;
   }
 
   .sound {
