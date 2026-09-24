@@ -1,17 +1,30 @@
 ---
+import fs from 'node:fs';
+import path from 'node:path';
 import HillPanel from './HillPanel.astro';
+
+type MediaItem = string | { type: 'video'; src: string; poster?: string };
 
 interface Props {
   name: string;
   description: string;
   url: string;
-  images?: string[];
+  media?: MediaItem[];
   date?: string;
 }
-const { name, description, url, images = [], date } = Astro.props;
+const { name, description, url, media = [], date } = Astro.props;
 const initial = name.trim().charAt(0).toUpperCase();
-const hasImages = images.length > 0;
-const isCarousel = images.length > 1;
+
+// A video slide only appears once its file exists in /public, so the JSON can
+// list it before the mp4 has been uploaded.
+const roots = [process.cwd(), path.join(process.cwd(), 'cal-turisme')];
+const fileExists = (src: string) => roots.some((r) => fs.existsSync(path.join(r, 'public', src)));
+const items = media
+  .filter((m) => typeof m === 'string' || fileExists(m.src))
+  .map((m) => (typeof m === 'string' ? { type: 'image' as const, src: m } : m));
+const hasMedia = items.length > 0;
+const isCarousel = items.length > 1;
+const label = `Visita ${name} (s'obre en una altra pestanya)`;
 ---
 <article class="post reveal">
   <div class="post-head">
@@ -20,36 +33,44 @@ const isCarousel = images.length > 1;
   </div>
 
   <div class="post-image" data-carousel={isCarousel ? 'true' : undefined}>
-    {hasImages ? (
+    {hasMedia ? (
       <div class="carousel-track">
-        {images.map((src) => (
-          <a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`Visita ${name} (s'obre en una altra pestanya)`}
-          >
-            <img src={src} alt={name} loading="lazy" />
-          </a>
-        ))}
+        {items.map((item) =>
+          item.type === 'video' ? (
+            <div class="slide slide--video">
+              <video
+                src={item.src}
+                poster={item.poster}
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                aria-label={`Vídeo de ${name}`}
+              ></video>
+              <button class="sound" type="button" aria-label="Activar el so" aria-pressed="false">
+                <svg class="off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m16 9 5 6M21 9l-5 6"/></svg>
+                <svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+              </button>
+            </div>
+          ) : (
+            <a class="slide" href={url} target="_blank" rel="noopener noreferrer" aria-label={label}>
+              <img src={item.src} alt={name} loading="lazy" />
+            </a>
+          )
+        )}
       </div>
     ) : (
-      <a
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={`Visita ${name} (s'obre en una altra pestanya)`}
-      >
+      <a class="slide" href={url} target="_blank" rel="noopener noreferrer" aria-label={label}>
         <HillPanel />
       </a>
     )}
 
     {isCarousel && (
       <>
-        <button class="car-btn prev" type="button" aria-label="Foto anterior">‹</button>
-        <button class="car-btn next" type="button" aria-label="Foto seguent">›</button>
+        <button class="car-btn prev" type="button" aria-label="Anterior">‹</button>
+        <button class="car-btn next" type="button" aria-label="Següent">›</button>
         <div class="dots">
-          {images.map((_, i) => <span class="dot" data-index={i}></span>)}
+          {items.map((_, i) => <span class="dot" data-index={i}></span>)}
         </div>
       </>
     )}
@@ -67,24 +88,64 @@ const isCarousel = images.length > 1;
 </article>
 
 <script>
-  document.querySelectorAll('[data-carousel="true"]').forEach((car) => {
-    const track = car.querySelector('.carousel-track');
-    const dots = car.querySelectorAll('.dot');
-    const prevBtn = car.querySelector('.prev');
-    const nextBtn = car.querySelector('.next');
-    if (!track) return;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    function update() {
-      const idx = Math.round(track.scrollLeft / track.clientWidth);
+  document.querySelectorAll<HTMLElement>('.post-image').forEach((box) => {
+    const track = box.querySelector<HTMLElement>('.carousel-track');
+    const slides = track ? Array.from(track.children) : [];
+    const dots = box.querySelectorAll('.dot');
+    const videos = box.querySelectorAll<HTMLVideoElement>('video');
+    let visible = false;
+
+    const activeIndex = () => (track ? Math.round(track.scrollLeft / track.clientWidth) : 0);
+
+    const syncVideos = () => {
+      const idx = activeIndex();
+      videos.forEach((v) => {
+        const slideIdx = track ? slides.indexOf(v.closest('.slide') as Element) : 0;
+        if (visible && slideIdx === idx && !reduceMotion) v.play().catch(() => {});
+        else v.pause();
+      });
+    };
+
+    const update = () => {
+      const idx = activeIndex();
       dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      syncVideos();
+    };
+
+    if (track) {
+      track.addEventListener('scroll', () => window.requestAnimationFrame(update));
+      box.querySelector('.prev')?.addEventListener('click', () =>
+        track.scrollBy({ left: -track.clientWidth, behavior: 'smooth' })
+      );
+      box.querySelector('.next')?.addEventListener('click', () =>
+        track.scrollBy({ left: track.clientWidth, behavior: 'smooth' })
+      );
     }
-    track.addEventListener('scroll', () => window.requestAnimationFrame(update));
-    prevBtn?.addEventListener('click', () => {
-      track.scrollBy({ left: -track.clientWidth, behavior: 'smooth' });
-    });
-    nextBtn?.addEventListener('click', () => {
-      track.scrollBy({ left: track.clientWidth, behavior: 'smooth' });
-    });
+
+    if (videos.length) {
+      new IntersectionObserver(
+        ([entry]) => {
+          visible = entry.isIntersecting;
+          syncVideos();
+        },
+        { threshold: 0.3 }
+      ).observe(box);
+
+      if (reduceMotion) videos.forEach((v) => (v.controls = true));
+
+      box.querySelectorAll<HTMLButtonElement>('.sound').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const v = btn.parentElement?.querySelector('video');
+          if (!v) return;
+          v.muted = !v.muted;
+          btn.setAttribute('aria-pressed', String(!v.muted));
+          btn.classList.toggle('is-on', !v.muted);
+        });
+      });
+    }
+
     update();
   });
 </script>
@@ -121,16 +182,18 @@ const isCarousel = images.length > 1;
 
   .post-image {
     position: relative;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 4 / 5;
     overflow: hidden;
     border: 1px solid var(--color-line);
+    background: var(--color-kalamata);
   }
   .post-image > a {
     display: block;
     width: 100%;
     height: 100%;
   }
-  .post-image img {
+  .post-image img,
+  .post-image video {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -145,10 +208,31 @@ const isCarousel = images.length > 1;
     scrollbar-width: none;
   }
   .carousel-track::-webkit-scrollbar { display: none; }
-  .carousel-track > a {
+  .carousel-track > .slide {
     flex: 0 0 100%;
     scroll-snap-align: start;
+    display: block;
+    position: relative;
   }
+
+  .sound {
+    position: absolute;
+    right: 0.75rem;
+    bottom: 0.75rem;
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 50%;
+    border: none;
+    background: rgba(20, 14, 10, 0.55);
+    color: #fff;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+  }
+  .sound svg { width: 1.1rem; height: 1.1rem; }
+  .sound .on { display: none; }
+  .sound.is-on .on { display: block; }
+  .sound.is-on .off { display: none; }
 
   .car-btn {
     position: absolute;
@@ -179,7 +263,7 @@ const isCarousel = images.length > 1;
     gap: 0.35rem;
     padding: 0.25rem 0.5rem;
     border-radius: 999px;
-    background: rgba(43, 42, 34, 0.35);
+    background: rgba(43, 33, 24, 0.35);
   }
   .dot {
     width: 0.4rem;

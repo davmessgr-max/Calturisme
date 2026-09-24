@@ -340,27 +340,66 @@ p { margin: 0; }
      transform-origin: left;
 }
 
-/* ---------- perfil estil Instagram ---------- */
-.ig-profile {
-     position: relative;
-     z-index: 2;
-     margin-top: -4.5rem;
-     background: var(--color-paper);
-     border: 1px solid var(--color-line);
-     box-shadow: 0 30px 60px -36px rgba(43, 33, 24, 0.55);
-     padding: clamp(1.5rem, 3vw, 2.25rem);
+/* ---------- banner compacte ---------- */
+.hero--compact {
+     min-height: clamp(20rem, 50vh, 34rem);
+     min-height: clamp(20rem, 50svh, 34rem);
 }
-.ig-head {
+.hero--compact .hero__content { padding-top: 6rem; padding-bottom: 2.25rem; }
+.hero--compact h1 {
+     font-size: clamp(2.1rem, 3.6vw, 3.2rem);
+     max-width: none;
+     margin-bottom: 0.6rem;
+}
+.hero--compact .hero__sub { margin-bottom: 0; font-size: 1rem; }
+.hero-row {
      display: flex;
-     align-items: center;
-     gap: clamp(1rem, 3vw, 2rem);
+     align-items: flex-end;
+     justify-content: space-between;
+     gap: 1.5rem 2rem;
      flex-wrap: wrap;
 }
+.hero-row > :first-child { flex: 1 1 26rem; min-width: 0; }
+.hero-row > .ig-pill { flex: 0 0 auto; }
+.hero-chips {
+     list-style: none;
+     margin: 1.5rem 0 0;
+     padding: 0;
+     display: flex;
+     flex-wrap: wrap;
+     gap: 0.6rem;
+}
+.hero-chips li {
+     display: inline-flex;
+     align-items: center;
+     gap: 0.5em;
+     padding: 0.45rem 0.95rem 0.45rem 0.7rem;
+     border: 1px solid rgba(255, 255, 255, 0.35);
+     border-radius: 999px;
+     background: rgba(255, 255, 255, 0.1);
+     backdrop-filter: blur(6px);
+     font-size: 0.82rem;
+     color: #fff;
+}
+.hero-chips svg { width: 1.05rem; height: 1.05rem; color: #E9DDB8; flex-shrink: 0; }
+
+/* ---------- perfil estil Instagram (pastilla) ---------- */
+.ig-pill {
+     display: flex;
+     align-items: center;
+     gap: 0.9rem;
+     padding: 0.5rem 0.55rem 0.5rem 0.8rem;
+     border-radius: 999px;
+     background: rgba(20, 14, 10, 0.4);
+     border: 1px solid rgba(255, 255, 255, 0.25);
+     backdrop-filter: blur(8px);
+}
+.ig-handle { font-family: var(--font-display); font-size: 0.98rem; font-weight: 600; color: #fff; }
 .ig-avatar {
      position: relative;
      flex-shrink: 0;
-     width: 5.5rem;
-     height: 5.5rem;
+     width: 2.6rem;
+     height: 2.6rem;
      border-radius: 50%;
      display: grid;
      place-items: center;
@@ -369,7 +408,7 @@ p { margin: 0; }
 .ig-avatar::before {
      content: '';
      position: absolute;
-     inset: -4px;
+     inset: -3px;
      border-radius: 50%;
      background: conic-gradient(var(--color-clay), var(--color-wheat), var(--color-pine), var(--color-clay));
      z-index: -1;
@@ -378,79 +417,47 @@ p { margin: 0; }
 .ig-avatar::after {
      content: '';
      position: absolute;
-     inset: -1px;
+     inset: 0;
      border-radius: 50%;
      background: var(--color-paper);
      z-index: -1;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
-.ig-meta { flex: 1 1 14rem; }
-.ig-handle { font-family: var(--font-display); font-size: 1.35rem; font-weight: 600; }
-.ig-bio { color: var(--color-capers); font-size: 0.95rem; margin-top: 0.15rem; }
+.btn--sm { padding: 0.55rem 1.1rem; font-size: 0.85rem; }
 .ig-follow { display: inline-flex; align-items: center; gap: 0.5em; }
-.ig-follow svg { width: 1.1rem; height: 1.1rem; }
+.ig-follow svg { width: 1.05rem; height: 1.05rem; }
 
-.highlights {
-     display: flex;
-     gap: clamp(1rem, 3vw, 1.75rem);
-     list-style: none;
-     margin: 1.75rem 0 0;
-     padding: 1.5rem 0 0;
-     border-top: 1px solid var(--color-line);
-     overflow-x: auto;
-     scrollbar-width: none;
-}
-.highlights::-webkit-scrollbar { display: none; }
-.highlight {
-     display: flex;
-     flex-direction: column;
+.ig-tabs { display: flex; justify-content: center; border-top: 1px solid var(--color-line); }
+.ig-tabs span {
+     display: inline-flex;
      align-items: center;
-     gap: 0.55rem;
-     font-size: 0.8rem;
-     color: var(--color-capers);
-     flex: 0 0 auto;
+     gap: 0.5em;
+     margin-top: -1px;
+     padding: 0.85rem 0;
+     border-top: 1px solid var(--color-ink);
+     font-size: 0.75rem;
+     letter-spacing: 0.14em;
+     text-transform: uppercase;
+     font-weight: 600;
 }
-.highlight span.dot {
-     width: 3.7rem;
-     height: 3.7rem;
-     border-radius: 50%;
-     border: 1.5px solid var(--color-wheat);
-     padding: 3px;
-     display: grid;
-     place-items: center;
-     transition: transform 0.3s ease, border-color 0.3s ease;
-}
-.highlight svg {
-     width: 100%;
-     height: 100%;
-     padding: 0.85rem;
-     border-radius: 50%;
-     background: var(--color-paper-2);
-     color: var(--color-clay);
-}
-.highlight:hover span.dot { transform: scale(1.08); border-color: var(--color-clay); }
+.ig-tabs svg { width: 1rem; height: 1rem; }
 
-/* ---------- reels ---------- */
-.reels-grid {
-     display: grid;
-     grid-template-columns: 1fr 1fr;
-     gap: clamp(2rem, 6vw, 5rem);
-     align-items: center;
+@media (max-width: 40rem) {
+     .hero--compact .hero__sub { display: none; }
+     .hero--compact .hero__content { padding-top: 5.5rem; }
+     .ig-pill { width: 100%; }
+     .ig-pill .btn { margin-left: auto; }
+     .hero-chips {
+          flex-wrap: nowrap;
+          overflow-x: auto;
+          scrollbar-width: none;
+          margin-inline: calc(-1 * clamp(1.25rem, 4vw, 2.5rem));
+          padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+     }
+     .hero-chips::-webkit-scrollbar { display: none; }
+     .hero-chips li { flex: 0 0 auto; }
 }
-.reel-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 2rem; }
-.phone {
-     width: min(100%, 24rem);
-     border: 6px solid var(--color-kalamata);
-     border-radius: 2.2rem;
-     background: #fff;
-     overflow: hidden;
-     box-shadow: 0 40px 70px -35px rgba(43, 33, 24, 0.7);
-}
-.phone iframe { display: block; width: 100%; min-width: 326px; height: 44rem; border: 0; background: #fff; }
-.section-head h2 + .lede { margin-top: 0.9rem; }
-
 @media (max-width: 60rem) {
-     .reels-grid { grid-template-columns: 1fr; }
      .feature, .feature--reverse { grid-template-columns: 1fr; direction: ltr; }
 }
 
